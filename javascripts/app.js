@@ -14,6 +14,11 @@ var rover = {
 };
 // ======================
 
+// Board Grid
+// ======================
+var board = [[]]; // Matriz para generar el tablero
+// ======================
+
 function showPosition(rover){
   console.log("Position: (" + rover.x + ", " + rover.y + ")");
 }
@@ -24,6 +29,10 @@ function badTurn(){
 
 function badForwBack(){
   console.log("Impossible to go!");
+}
+
+function obstacleMsg(){
+  console.log("Obstacle found!");
 }
 
 function turnLeft(rover){
@@ -74,40 +83,81 @@ function turnRight(rover){
   };
 }
 
+function printBoard(board){
+  for(var i=0; i<=9; i++){
+    for(var j=0; j <=9; j++){
+      document.write(board[j][i] + " ");
+    }
+    document.write('<br>');
+  }
+  document.write('<br>');
+}
+
 function moveForward(rover){
   console.log("moveForward was called!");
   switch (rover.direction){
     case "N":
-      if ((rover.y - 1) >= 0){
+      if ( ( (rover.y - 1) >= 0) && ( board[rover.x][rover.y - 1] !== "O" ) ){
+        board[rover.x][rover.y] = "X";
+        
         rover.y--;
-        rover.travelLog.push([rover.x, rover.y]);
+        rover.travelLog.push( [rover.x, rover.y] );
+        
+        board[rover.x][rover.y] = "R";
+      }
+      else if ( board[rover.x][rover.y - 1] === "O" ){
+        obstacleMsg();
       }
       else{
         badForwBack();
       }
       break;
     case "S":
-      if ((rover.y + 1) <= 9){
+      if ( ( (rover.y + 1) <= 9 ) && ( board[rover.x][rover.y + 1] !== "O" ) ){
+        //board[rover.x][rover.y++] = board[rover.x][rover.y];
+        //board[rover.x][rover.y] = "X";
+        board[rover.x][rover.y] = "X";
+
         rover.y++;
         rover.travelLog.push([rover.x, rover.y]);
+        
+        board[rover.x][rover.y] = "R";
+        
+      }
+      else if ( board[rover.x][rover.y + 1] === "O" ){
+        obstacleMsg();
       }
       else{
         badForwBack();
       }
       break;
     case "E":
-      if ((rover.x + 1) <= 9){
+      if ( ( (rover.x + 1) <= 9 ) && ( board[rover.x + 1][rover.y] !== "O" ) ){
+        board[rover.x][rover.y] = "X";
+        
         rover.x++;
         rover.travelLog.push([rover.x, rover.y]);
+        
+        board[rover.x][rover.y] = "R";
+      }
+      else if ( board[rover.x + 1][rover.y] === "O" ){
+        obstacleMsg();
       }
       else{
         badForwBack();
       }
       break;
     case "W":
-      if ((rover.x - 1) >= 0){
+      if ( ( (rover.x - 1) >= 0) && ( board[rover.x - 1][rover.y] !== "O" ) ){
+        board[rover.x][rover.y] = "X";
+        
         rover.x--;
         rover.travelLog.push([rover.x, rover.y]);
+        
+        board[rover.x][rover.y] = "R";
+      }
+      else if ( board[rover.x - 1][rover.y] === "O" ){
+        obstacleMsg();
       }
       else{
         badForwBack();
@@ -117,6 +167,7 @@ function moveForward(rover){
     badForwBack();
   };
   showPosition(rover);
+  printBoard(board);
 }
 
 function moveBackward(rover){
@@ -162,6 +213,7 @@ function moveBackward(rover){
       badForwBack();
   };
   showPosition(rover);
+  printBoard(board);
 }
 
 function moveToDo(letter){
@@ -196,9 +248,40 @@ function printTravel(rover){
   }
 }
 
+function generateObstacle(board) {
+  var x = Math.floor(Math.random() * 9);
+  var y = Math.floor(Math.random() * 9);
+
+  if ( board[x][y] !== "R" && board[x][y] !== "O" ) {
+    board[x][y] = "O";
+    console.log( "Obstacle: (" + x + ", " + y + ")" );
+  }
+  else {
+    generateObstacle(board);
+  }
+  
+}
+
+for(var i=0; i<=9; i++) {
+  board[i] = [];
+  for(var j=0; j<=9; j++) {
+      board[i][j] = "X";
+  }
+}
+board[0][0] = "R"; // Posicionado del rover
+
+var numObstacle = 10; // Número de obstáculos
+for(var i = 0; i<numObstacle; i++){ // Generación de obstáculos
+  generateObstacle(board);
+}
+
+printBoard(board); // Pinta tablero inicial
+
 //var moves = "ffzzy";
 var moves = "rffrfflfrrr";
 //var moves = "lbbbbbbbblffrflbbbbu";
+//var moves = "rrf";
 
 commands(moves);
 printTravel(rover);
+
