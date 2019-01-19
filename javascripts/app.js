@@ -6,11 +6,21 @@
 
 // Rover Object Goes Here
 // ======================
-var rover = {
+var rover1 = {
   direction: "N", // Posibles valores: N, S, E ó W
   x: 0,
   y: 0,
   travelLog: [[0, 0]]
+};
+// ======================
+
+// Other Rover Object Goes Here
+// ======================
+var rover2 = {
+  direction: "S", // Posibles valores: N, S, E ó W
+  x: 9,
+  y: 9,
+  travelLog: [[9, 9]]
 };
 // ======================
 
@@ -245,7 +255,7 @@ function moveBackward(rover){
   printBoard(board);
 }
 
-function moveToDo(letter){
+function moveToDo(letter, rover){
   switch(letter){
     case "f":
       moveForward(rover);
@@ -264,9 +274,9 @@ function moveToDo(letter){
   };
 }
 
-function commands(moves){
+function commands(moves, rover){
   for(var i = 0; i < moves.length; i++){
-    moveToDo(moves[i]);
+    moveToDo(moves[i], rover);
   };
 }
 
@@ -291,25 +301,34 @@ function generateObstacle(board) {
   
 }
 
-for(var i=0; i<=9; i++) {
-  board[i] = [];
-  for(var j=0; j<=9; j++) {
-      board[i][j] = "X";
+function beginAll(){
+  for(var i=0; i<=9; i++) {
+    board[i] = [];
+    for(var j=0; j<=9; j++) {
+        board[i][j] = "X";
+    }
   }
-}
-board[0][0] = "R"; // Posicionado del rover
+  board[0][0] = "R"; // Posicionado del rover1
+  board[9][9] = "R"; // Posicionado del rover2
 
-var numObstacle = 20; // Número de obstáculos
-for(var i = 0; i<numObstacle; i++){ // Generación de obstáculos
-  generateObstacle(board);
+  var numObstacle = 20; // Número de obstáculos
+  for(var i = 0; i<numObstacle; i++){ // Generación de obstáculos
+    generateObstacle(board);
+  }
+
+  printBoard(board); // Pinta tablero inicial
 }
 
-printBoard(board); // Pinta tablero inicial
+function runRover(moves, rover){
+  commands(moves, rover);
+  printTravel(rover);
+}
 
 //var moves = "ffzzy";
-//var moves = "rffrfflfrrr";
-var moves = "lbbbbbbbblffrflbbbbu";
-//var moves = "rrf";
+var moves1 = "rffrfflfrrr";
+//var moves = "lbbbbbbbblffrflbbbbu";
+var moves2 = "rrf";
 
-commands(moves);
-printTravel(rover);
+beginAll();
+runRover(moves1, rover1);
+runRover(moves2, rover2);
