@@ -114,8 +114,7 @@ function moveForward(rover){
       break;
     case "S":
       if ( ( (rover.y + 1) <= 9 ) && ( board[rover.x][rover.y + 1] !== "O" ) ){
-        //board[rover.x][rover.y++] = board[rover.x][rover.y];
-        //board[rover.x][rover.y] = "X";
+        
         board[rover.x][rover.y] = "X";
 
         rover.y++;
@@ -171,46 +170,76 @@ function moveForward(rover){
 }
 
 function moveBackward(rover){
-  console.log("moveBackward was called!");
+  console.log("moveForward was called!");
   switch (rover.direction){
     case "N":
-      if ((rover.y + 1) <= 9){
+      if ( ( (rover.y + 1) >= 0) && ( board[rover.x][rover.y + 1] !== "O" ) ){
+        board[rover.x][rover.y] = "X";
+        
         rover.y++;
-        rover.travelLog.push([rover.x, rover.y]);
+        rover.travelLog.push( [rover.x, rover.y] );
+        
+        board[rover.x][rover.y] = "R";
+      }
+      else if ( board[rover.x][rover.y + 1] === "O" ){
+        obstacleMsg();
       }
       else{
         badForwBack();
       }
       break;
     case "S":
-      if ((rover.y - 1) >= 0){
+      if ( ( (rover.y - 1) <= 9 ) && ( board[rover.x][rover.y - 1] !== "O" ) ){
+        
+        board[rover.x][rover.y] = "X";
+
         rover.y--;
         rover.travelLog.push([rover.x, rover.y]);
+        
+        board[rover.x][rover.y] = "R";
+        
+      }
+      else if ( board[rover.x][rover.y - 1] === "O" ){
+        obstacleMsg();
       }
       else{
         badForwBack();
       }
       break;
     case "E":
-      if ((rover.x - 1) >= 0){
+      if ( ( (rover.x - 1) <= 9 ) && ( board[rover.x - 1][rover.y] !== "O" ) ){
+        board[rover.x][rover.y] = "X";
+        
         rover.x--;
         rover.travelLog.push([rover.x, rover.y]);
+        
+        board[rover.x][rover.y] = "R";
+      }
+      else if ( board[rover.x - 1][rover.y] === "O" ){
+        obstacleMsg();
       }
       else{
         badForwBack();
       }
       break;
     case "W":
-      if ((rover.x + 1) <= 9){
+      if ( ( (rover.x + 1) >= 0) && ( board[rover.x + 1][rover.y] !== "O" ) ){
+        board[rover.x][rover.y] = "X";
+        
         rover.x++;
         rover.travelLog.push([rover.x, rover.y]);
+        
+        board[rover.x][rover.y] = "R";
+      }
+      else if ( board[rover.x + 1][rover.y] === "O" ){
+        obstacleMsg();
       }
       else{
         badForwBack();
       }
       break;
     default:
-      badForwBack();
+    badForwBack();
   };
   showPosition(rover);
   printBoard(board);
@@ -270,7 +299,7 @@ for(var i=0; i<=9; i++) {
 }
 board[0][0] = "R"; // Posicionado del rover
 
-var numObstacle = 10; // Número de obstáculos
+var numObstacle = 20; // Número de obstáculos
 for(var i = 0; i<numObstacle; i++){ // Generación de obstáculos
   generateObstacle(board);
 }
