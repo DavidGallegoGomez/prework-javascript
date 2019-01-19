@@ -1,7 +1,10 @@
 //
 // @author: David Gallego Gómez
 // @since: 15/01/2019
-// Segundo ejercicio del prework, IronHack Madrid
+// Segundo ejercicio del prework, IronHack Madrid:
+// * Detecta los bordes da la malla 10x10
+// * Movimientos hacia atrás y Validación de entradas
+// * Se detectan obstáculos (generados aleatoriamente) y también la presencia de otro Rover
 //
 
 // Rover Object Goes Here
@@ -18,9 +21,9 @@ var rover1 = {
 // ======================
 var rover2 = {
   direction: "S", // Posibles valores: N, S, E ó W
-  x: 9,
-  y: 9,
-  travelLog: [[9, 9]]
+  x: 3,
+  y: 0,
+  travelLog: [[3, 0]]
 };
 // ======================
 
@@ -43,6 +46,10 @@ function badForwBack(){
 
 function obstacleMsg(){
   console.log("Obstacle found!");
+}
+
+function anotherRoverMsg(){
+  console.log("Another Rover found!");
 }
 
 function turnLeft(rover){
@@ -107,7 +114,7 @@ function moveForward(rover){
   console.log("moveForward was called!");
   switch (rover.direction){
     case "N":
-      if ( ( (rover.y - 1) >= 0) && ( board[rover.x][rover.y - 1] !== "O" ) ){
+      if ( ( (rover.y - 1) >= 0) && ( board[rover.x][rover.y - 1] !== "O" ) && ( board[rover.x][rover.y - 1] !== "R" ) ){
         board[rover.x][rover.y] = "X";
         
         rover.y--;
@@ -118,12 +125,15 @@ function moveForward(rover){
       else if ( board[rover.x][rover.y - 1] === "O" ){
         obstacleMsg();
       }
+      else if ( board[rover.x][rover.y - 1] === "R" ){
+        anotherRoverMsg();
+      }
       else{
         badForwBack();
       }
       break;
     case "S":
-      if ( ( (rover.y + 1) <= 9 ) && ( board[rover.x][rover.y + 1] !== "O" ) ){
+      if ( ( (rover.y + 1) <= 9 ) && ( board[rover.x][rover.y + 1] !== "O" && ( board[rover.x][rover.y + 1] !== "R" ) ) ){
         
         board[rover.x][rover.y] = "X";
 
@@ -136,12 +146,15 @@ function moveForward(rover){
       else if ( board[rover.x][rover.y + 1] === "O" ){
         obstacleMsg();
       }
+      else if ( board[rover.x][rover.y + 1] === "R" ){
+        anotherRoverMsg();
+      }
       else{
         badForwBack();
       }
       break;
     case "E":
-      if ( ( (rover.x + 1) <= 9 ) && ( board[rover.x + 1][rover.y] !== "O" ) ){
+      if ( ( (rover.x + 1) <= 9 ) && ( board[rover.x + 1][rover.y] !== "O" ) && ( board[rover.x + 1][rover.y] !== "R" ) ){
         board[rover.x][rover.y] = "X";
         
         rover.x++;
@@ -152,12 +165,15 @@ function moveForward(rover){
       else if ( board[rover.x + 1][rover.y] === "O" ){
         obstacleMsg();
       }
+      else if ( board[rover.x + 1][rover.y] === "R" ){
+        anotherRoverMsg();
+      }
       else{
         badForwBack();
       }
       break;
     case "W":
-      if ( ( (rover.x - 1) >= 0) && ( board[rover.x - 1][rover.y] !== "O" ) ){
+      if ( ( (rover.x - 1) >= 0) && ( board[rover.x - 1][rover.y] !== "O" ) && ( board[rover.x - 1][rover.y] !== "R" ) ){
         board[rover.x][rover.y] = "X";
         
         rover.x--;
@@ -167,6 +183,9 @@ function moveForward(rover){
       }
       else if ( board[rover.x - 1][rover.y] === "O" ){
         obstacleMsg();
+      }
+      else if ( board[rover.x - 1][rover.y] === "R" ){
+        anotherRoverMsg();
       }
       else{
         badForwBack();
@@ -183,7 +202,7 @@ function moveBackward(rover){
   console.log("moveForward was called!");
   switch (rover.direction){
     case "N":
-      if ( ( (rover.y + 1) <= 9) && ( board[rover.x][rover.y + 1] !== "O" ) ){
+      if ( ( (rover.y + 1) <= 9) && ( board[rover.x][rover.y + 1] !== "O" ) && ( board[rover.x][rover.y + 1] !== "R" ) ){
         board[rover.x][rover.y] = "X";
         
         rover.y++;
@@ -194,12 +213,15 @@ function moveBackward(rover){
       else if ( board[rover.x][rover.y + 1] === "O" ){
         obstacleMsg();
       }
+      else if ( board[rover.x][rover.y + 1] === "R" ){
+        anotherRoverMsg();
+      }
       else{
         badForwBack();
       }
       break;
     case "S":
-      if ( ( (rover.y - 1) >= 0 ) && ( board[rover.x][rover.y - 1] !== "O" ) ){
+      if ( ( (rover.y - 1) >= 0 ) && ( board[rover.x][rover.y - 1] !== "O" ) && ( board[rover.x][rover.y - 1] !== "R" ) ){
         
         board[rover.x][rover.y] = "X";
 
@@ -212,12 +234,15 @@ function moveBackward(rover){
       else if ( board[rover.x][rover.y - 1] === "O" ){
         obstacleMsg();
       }
+      else if ( board[rover.x][rover.y - 1] === "R" ){
+        anotherRoverMsg();
+      }
       else{
         badForwBack();
       }
       break;
     case "E":
-      if ( ( (rover.x - 1) >= 0 ) && ( board[rover.x - 1][rover.y] !== "O" ) ){
+      if ( ( (rover.x - 1) >= 0 ) && ( board[rover.x - 1][rover.y] !== "O" ) ( board[rover.x - 1][rover.y] !== "R" ) ){
         board[rover.x][rover.y] = "X";
         
         rover.x--;
@@ -228,12 +253,15 @@ function moveBackward(rover){
       else if ( board[rover.x - 1][rover.y] === "O" ){
         obstacleMsg();
       }
+      else if ( board[rover.x - 1][rover.y] === "R" ){
+        anotherRoverMsg();
+      }
       else{
         badForwBack();
       }
       break;
     case "W":
-      if ( ( (rover.x + 1) <= 9) && ( board[rover.x + 1][rover.y] !== "O" ) ){
+      if ( ( (rover.x + 1) <= 9) && ( board[rover.x + 1][rover.y] !== "O" ) && ( board[rover.x + 1][rover.y] !== "R" ) ){
         board[rover.x][rover.y] = "X";
         
         rover.x++;
@@ -243,6 +271,9 @@ function moveBackward(rover){
       }
       else if ( board[rover.x + 1][rover.y] === "O" ){
         obstacleMsg();
+      }
+      else if ( board[rover.x + 1][rover.y] === "R" ){
+        anotherRoverMsg();
       }
       else{
         badForwBack();
@@ -309,7 +340,7 @@ function beginAll(){
     }
   }
   board[0][0] = "R"; // Posicionado del rover1
-  board[9][9] = "R"; // Posicionado del rover2
+  board[3][0] = "R"; // Posicionado del rover2
 
   var numObstacle = 20; // Número de obstáculos
   for(var i = 0; i<numObstacle; i++){ // Generación de obstáculos
