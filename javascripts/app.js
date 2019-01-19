@@ -173,7 +173,7 @@ function moveBackward(rover){
   console.log("moveForward was called!");
   switch (rover.direction){
     case "N":
-      if ( ( (rover.y + 1) >= 0) && ( board[rover.x][rover.y + 1] !== "O" ) ){
+      if ( ( (rover.y + 1) <= 9) && ( board[rover.x][rover.y + 1] !== "O" ) ){
         board[rover.x][rover.y] = "X";
         
         rover.y++;
@@ -189,7 +189,7 @@ function moveBackward(rover){
       }
       break;
     case "S":
-      if ( ( (rover.y - 1) <= 9 ) && ( board[rover.x][rover.y - 1] !== "O" ) ){
+      if ( ( (rover.y - 1) >= 0 ) && ( board[rover.x][rover.y - 1] !== "O" ) ){
         
         board[rover.x][rover.y] = "X";
 
@@ -207,7 +207,7 @@ function moveBackward(rover){
       }
       break;
     case "E":
-      if ( ( (rover.x - 1) <= 9 ) && ( board[rover.x - 1][rover.y] !== "O" ) ){
+      if ( ( (rover.x - 1) >= 0 ) && ( board[rover.x - 1][rover.y] !== "O" ) ){
         board[rover.x][rover.y] = "X";
         
         rover.x--;
@@ -223,7 +223,7 @@ function moveBackward(rover){
       }
       break;
     case "W":
-      if ( ( (rover.x + 1) >= 0) && ( board[rover.x + 1][rover.y] !== "O" ) ){
+      if ( ( (rover.x + 1) <= 9) && ( board[rover.x + 1][rover.y] !== "O" ) ){
         board[rover.x][rover.y] = "X";
         
         rover.x++;
@@ -307,10 +307,9 @@ for(var i = 0; i<numObstacle; i++){ // Generación de obstáculos
 printBoard(board); // Pinta tablero inicial
 
 //var moves = "ffzzy";
-var moves = "rffrfflfrrr";
-//var moves = "lbbbbbbbblffrflbbbbu";
+//var moves = "rffrfflfrrr";
+var moves = "lbbbbbbbblffrflbbbbu";
 //var moves = "rrf";
 
 commands(moves);
 printTravel(rover);
-
